@@ -6,21 +6,40 @@
         <ul class="nav navbar-nav pull-xs-right">
           <li class="nav-item">
             <!-- Add "active" class when you're on that page" -->
-            <a class="nav-link active" href="">Home</a>
+            <!-- <a class="nav-link active" href="">Home</a> -->
+            <nuxt-link class="nav-link" to="/" exact>Home</nuxt-link>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="">
-              <i class="ion-compose"></i>&nbsp;New Post
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="">
+          <template v-if="user">
+            <li class="nav-item">
+              <!-- <a class="nav-link" href="">
+             <i class="ion-compose"></i>&nbsp;New Post
+            </a> -->
+              <nuxt-link class="nav-link" to="/editor">
+                <i class="ion-compose"></i>&nbsp;New Post</nuxt-link
+              >
+            </li>
+            <li class="nav-item">
+              <!-- <a class="nav-link" href="">
               <i class="ion-gear-a"></i>&nbsp;Settings
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="">Sign up</a>
-          </li>
+            </a> -->
+              <nuxt-link class="nav-link" to="/settings">
+                <i class="ion-gear-a"></i>&nbsp;Settings</nuxt-link
+              >
+            </li>
+            <li class="nav-item">
+              <nuxt-link to="/profile/123">
+                <img class="user-pic" src="https://www.baidu.com/img/dong_528d34b686d4889666f77c62b9a65857.gif" />
+                {{ user.username }}
+              </nuxt-link>
+            </li>
+          </template>
+
+          <template v-else>
+            <li class="nav-item">
+              <!-- <a class="nav-link" href="">Sign up</a> -->
+              <nuxt-link class="nav-link" to="/login"> Sign in</nuxt-link>
+            </li>
+          </template>
         </ul>
       </div>
     </nav>
@@ -41,10 +60,19 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "layout",
+  computed: {
+    ...mapState(["user"]),
+  },
 };
 </script>
 
 <style>
+.user-pic{
+  width: 40px;
+  height: 40px;
+}
 </style>

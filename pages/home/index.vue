@@ -21,26 +21,55 @@
             </ul>
           </div>
 
-          <div class="article-preview">
+          <div
+            v-for="article in articles"
+            class="article-preview"
+            :key="article.slug"
+          >
             <div class="article-meta">
-              <a href="profile.html"
-                ><img src="http://i.imgur.com/Qr71crq.jpg"
-              /></a>
+              <nuxt-link
+                :to="{
+                  name: 'profile',
+                  params: {
+                    userName: article.author.username,
+                  },
+                }"
+                ><img :src="article.author.image"
+              /></nuxt-link>
               <div class="info">
-                <a href="" class="author">Eric Simons</a>
-                <span class="date">January 20th</span>
+                <nuxt-link
+                  class="info"
+                  :to="{
+                    name: 'profile',
+                    params: {
+                      userName: article.author.username,
+                    },
+                  }"
+                  >{{ article.author.username }}</nuxt-link
+                >
+                <span class="date">{{ article.createdAt }}</span>
               </div>
-              <button class="btn btn-outline-primary btn-sm pull-xs-right">
-                <i class="ion-heart"></i> 29
+              <button
+                class="btn btn-outline-primary btn-sm pull-xs-right"
+                :class="{
+                  active: article.favorited,
+                }"
+              >
+                <i class="ion-heart"></i> {{ article.favoritesCount }}
               </button>
             </div>
-            <a href="" class="preview-link">
-              <h1>How to build webapps that scale</h1>
-              <p>This is the description for the post.</p>
+            <nuxt-link :to="{
+              name: 'article',
+              params: {
+                slug: article.slug
+              }
+            }" class="preview-link">
+              <h1>{{ article.title }}</h1>
+              <p>{{ article.body }}</p>
               <span>Read more...</span>
-            </a>
+            </nuxt-link>
           </div>
-
+          <!-- 
           <div class="article-preview">
             <div class="article-meta">
               <a href="profile.html"
@@ -62,7 +91,7 @@
               <p>This is the description for the post.</p>
               <span>Read more...</span>
             </a>
-          </div>
+          </div> -->
         </div>
 
         <div class="col-md-3">
@@ -87,8 +116,21 @@
 </template>
 
 <script>
+import { getArticles } from "@/api/article";
 export default {
   name: "Home",
+  async asyncData() {
+    const { data } = await getArticles({
+      limit: 10,
+    });
+    console.log("articles", data);
+    return { articles: data.articles, articlesCount: data.articlesCount };
+  },
+  data() {
+    return {
+      articles: [],
+    };
+  },
 };
 </script>
 
