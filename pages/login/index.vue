@@ -1,7 +1,6 @@
 <template>
   <div class="auth-page">
     <div class="container page">
-      <div v-if="isLogin" @click="goBack" class="goBack">Go Back</div>
       <div class="row">
         <div class="col-md-6 offset-md-3 col-xs-12">
           <h1 class="text-xs-center">{{ isLogin ? "Sign in" : "Sign up" }}</h1>

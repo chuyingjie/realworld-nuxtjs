@@ -27,8 +27,14 @@
               >
             </li>
             <li class="nav-item">
-              <nuxt-link to="/profile/123">
-                <img class="user-pic" src="https://www.baidu.com/img/dong_528d34b686d4889666f77c62b9a65857.gif" />
+              <nuxt-link
+                class="nav-link ng-binding"
+                to="/profile/123"
+              >
+                <img
+                  class="user-pic"
+                  :src="user.image"
+                />
                 {{ user.username }}
               </nuxt-link>
             </li>
@@ -71,7 +77,7 @@ export default {
 </script>
 
 <style>
-.user-pic{
+.user-pic {
   width: 40px;
   height: 40px;
 }
