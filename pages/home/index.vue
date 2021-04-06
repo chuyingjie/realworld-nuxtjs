@@ -170,11 +170,13 @@ import { getTag } from "@/api/tag";
 import { mapState } from "vuex";
 export default {
   name: "Home",
-  async asyncData({ query, store }) {
+  async asyncData({ query, store, req }) {
     const page = Number(query.page) || 1,
       limit = 5,
       { tag } = query,
       tab = query.tab || "global_feed";
+      console.log('homepage store.state.user',store.state.user)
+      // console.log('homepage req',req)
     const loadArticles =
       store.state.user && tab === "your_feed" ? getFeedArticles : getArticles;
 
