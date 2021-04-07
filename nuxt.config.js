@@ -61,6 +61,10 @@ module.exports = {
         '~/plugins/request.js',
         '~/plugins/dayjs.js'
     ],
+    server: {
+      host: '0.0.0.0',
+      port: 3000
+    },
     head: {
         title: 'my website title',
         meta: [
