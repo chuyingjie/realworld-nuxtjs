@@ -4,16 +4,20 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-12 col-md-10 offset-md-1">
-            <img src="http://i.imgur.com/Qr71crq.jpg" class="user-img" />
-            <h4>Eric Simons</h4>
+            <img :src="profile && profile.image" class="user-img" />
+            <h4>{{ profile && profile.username }}</h4>
             <p>
-              Cofounder @GoThinkster, lived in Aol's HQ for a few months, kinda
-              looks like Peeta from the Hunger Games
+              {{ profile && profile.bio }}
             </p>
-            <button class="btn btn-sm btn-outline-secondary action-btn">
-              <i class="ion-plus-round"></i>
-              &nbsp; Follow Eric Simons
-            </button>
+            <!-- <button class="btn btn-sm btn-outline-secondary action-btn">
+              <i class="ion-gear-a"></i> Edit Profile Settings
+            </button> -->
+            <nuxt-link v-if="showEditButton" class="btn btn-sm btn-outline-secondary action-btn" :to="{
+              name: 'settings'
+            }">
+              <i class="ion-gear-a"></i> Edit Profile Settings
+            </nuxt-link>
+          </a>
           </div>
         </div>
       </div>
@@ -82,8 +86,31 @@
 </template>
 
 <script>
+import { getProfile } from "@/api/profiles";
 export default {
-    name: "profile"
+  name: "profile",
+  mounted() {
+    this.getData();
+  },
+  computed: {
+    username: function () {
+      return this.$route.params.userName;
+    },
+    showEditButton: function () {
+      return this.$route.params.userName === this.$store.state.user.username;
+    },
+  },
+  data() {
+    return {
+      profile: null,
+    };
+  },
+  methods: {
+    async getData() {
+      const { data } = await getProfile(this.username);
+      this.profile = data.profile;
+    },
+  },
 };
 </script>
 

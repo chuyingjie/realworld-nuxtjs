@@ -11,28 +11,28 @@
                 <input
                   class="form-control"
                   type="text"
-                  placeholder="URL of profile picture"
+                  :placeholder="user.image"
                 />
               </fieldset>
               <fieldset class="form-group">
                 <input
                   class="form-control form-control-lg"
                   type="text"
-                  placeholder="Your Name"
+                  :placeholder="user.username"
                 />
               </fieldset>
               <fieldset class="form-group">
                 <textarea
                   class="form-control form-control-lg"
                   rows="8"
-                  placeholder="Short bio about you"
+                  :placeholder="user.bio"
                 ></textarea>
               </fieldset>
               <fieldset class="form-group">
                 <input
                   class="form-control form-control-lg"
                   type="text"
-                  placeholder="Email"
+                  :placeholder="user.email"
                 />
               </fieldset>
               <fieldset class="form-group">
@@ -45,6 +45,10 @@
               <button class="btn btn-lg btn-primary pull-xs-right">
                 Update Settings
               </button>
+              <hr />
+              <button class="btn btn-outline-danger" @click="logout">
+                Or click here to logout.
+              </button>
             </fieldset>
           </form>
         </div>
@@ -55,7 +59,22 @@
 
 <script>
 export default {
-    name: "settings"
+  middleware: "authenticated",
+  name: "settings",
+  computed: {
+    user: function () {
+      return this.$store.state.user;
+    },
+  },
+  mounted() {
+    console.log("user", this.user);
+  },
+  methods: {
+    logout() {
+      const Cookie = require("js-cookie");
+      Cookie.remove("user");
+    },
+  },
 };
 </script>
 

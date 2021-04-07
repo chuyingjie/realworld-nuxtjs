@@ -29,7 +29,12 @@
             <li class="nav-item">
               <nuxt-link
                 class="nav-link ng-binding"
-                to="/profile/123"
+                :to="{
+                  name: 'profile',
+                  params: {
+                    userName: user.username
+                  }
+                }"
               >
                 <img
                   class="user-pic"
