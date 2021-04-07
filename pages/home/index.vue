@@ -16,7 +16,7 @@
                 <nuxt-link
                   class="nav-link"
                   :class="{
-                    active: tab === 'your_feed'
+                    active: tab === 'your_feed',
                   }"
                   exact
                   :to="{
@@ -32,7 +32,7 @@
                 <nuxt-link
                   class="nav-link"
                   :class="{
-                    active: tab === 'global_feed'
+                    active: tab === 'global_feed',
                   }"
                   exact
                   :to="{
@@ -85,13 +85,17 @@
                   }"
                   >{{ article.author.username }}</nuxt-link
                 >
-                <span class="date">{{ article.createdAt | date("MMM DD,YYYY") }}</span>
+                <span class="date">{{
+                  article.createdAt | date("MMM DD,YYYY")
+                }}</span>
               </div>
               <button
                 class="btn btn-outline-primary btn-sm pull-xs-right"
                 :class="{
                   active: article.favorited,
                 }"
+                @click="onFavorite(article)"
+                :disabled="article.favoriteDisabled"
               >
                 <i class="ion-heart"></i> {{ article.favoritesCount }}
               </button>
@@ -165,7 +169,12 @@
 </template>
 
 <script>
-import { getArticles, getFeedArticles } from "@/api/article";
+import {
+  getArticles,
+  getFeedArticles,
+  addFavoriteArticle,
+  deleteFavoriteArticle,
+} from "@/api/article";
 import { getTag } from "@/api/tag";
 import { mapState } from "vuex";
 export default {
@@ -175,8 +184,6 @@ export default {
       limit = 5,
       { tag } = query,
       tab = query.tab || "global_feed";
-      console.log('homepage store.state.user',store.state.user)
-      // console.log('homepage req',req)
     const loadArticles =
       store.state.user && tab === "your_feed" ? getFeedArticles : getArticles;
 
@@ -191,6 +198,8 @@ export default {
 
     const { articles, articlesCount } = articleRes.data,
       { tags } = tagRes.data;
+
+    articles.forEach((article) => (article.favoriteDisabled = false));
 
     return {
       articles,
@@ -214,7 +223,21 @@ export default {
     },
   },
   watchQuery: ["page", "tag", "tab"],
-  mounted() {
+  mounted() {},
+  methods: {
+    async onFavorite(article) {
+      article.favoriteDisabled = true;
+      if (article.favorited) {
+        await deleteFavoriteArticle(article.slug);
+        article.favorited = false;
+        article.favoritesCount -= 1;
+      } else {
+        await addFavoriteArticle(article.slug);
+        article.favorited = true;
+        article.favoritesCount += 1;
+      }
+      article.favoriteDisabled = false;
+    },
   },
 };
 </script>

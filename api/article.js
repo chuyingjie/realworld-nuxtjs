@@ -16,3 +16,18 @@ export const getFeedArticles = params => {
     });
 }
 
+
+export const addFavoriteArticle = slug => {
+    return request({
+        method: "POST",
+        url: `/api/articles/${slug}/favorite`,
+    });
+}
+
+export const deleteFavoriteArticle = slug => {
+    return request({
+        method: "DELETE",
+        url: `/api/articles/${slug}/favorite`,
+    });
+}
+

@@ -3,7 +3,6 @@ module.exports = {
         linkActiveClass: 'active',
         //自定义路由规则
         extendRoutes(routes, resolve) {
-            // console.log('routes',routes)
             routes.splice(0)
 
             routes.push(...[
