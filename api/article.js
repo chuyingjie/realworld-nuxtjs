@@ -31,3 +31,24 @@ export const deleteFavoriteArticle = slug => {
     });
 }
 
+export const getArticle = slug => {
+    return request({
+        method: "GET",
+        url: `/api/articles/${slug}`,
+    });
+}
+
+export const getArticleComments = slug => {
+    return request({
+        method: "GET",
+        url: `/api/articles/${slug}/comments`,
+    });
+}
+
+export const addArticleComments = (slug, data) => {
+    return request({
+        method: "POST",
+        url: `/api/articles/${slug}/comments`,
+        data
+    });
+}
